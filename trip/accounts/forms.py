@@ -66,8 +66,8 @@ class LoginForm(forms.Form):
 class RegisterForm(forms.Form):
     """ 用户注册 """
     username = forms.CharField(label='手机号码', max_length=11, required=True, error_messages={
-                                   'required': '请输入手机号码'
-                               })
+        'required': '请输入手机号码'
+    })
     password = forms.CharField(label='密码', max_length=128, required=True, error_messages={
         'required': '请输入密码'
     })
@@ -85,7 +85,7 @@ class RegisterForm(forms.Form):
         if not re.search(pattern, username):
             raise forms.ValidationError('手机号%s输入不正确',
                                         code='invalid_phone',
-                                        params=(username, ))
+                                        params=(username,))
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError('手机号已经被使用了')
         return username
@@ -104,6 +104,7 @@ class RegisterForm(forms.Form):
             return
         phone_num = self.cleaned_data.get('username', None)
         sms_code = self.cleaned_data.get('sms_code', None)
+
         # redis中的验证码key
         key = '{}{}'.format(constants.REGISTER_MSM_CODE_KEY, phone_num)
 
@@ -116,35 +117,40 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError('验证码输入不正确')
 
         return data
+
     @transaction.atomic()
-    def do_register(self, requset):
+    def do_register(self, request):
         """ 执行注册 """
         data = self.cleaned_data
-        # 1. 创建基础信息表
-        user = User.objects.create_user(
-            username=data.get('username', None),
-            password=data.get('password', None),
-            nickname=data.get('nickname', None),
-        )
-        # 2. 创建详细信息表
-        version = requset.headers.get('version')
-        source = requset.headers.get('source', '')
-        profile = Profile.objects.create(
-            user=user,
-            username=user.username,
-            version=version,
-            source=source
-        )
-        # 3. 执行登录
-        login(requset, user)
-        # 4. 记录登录日志
-        user.last_login = now()
-        user.save()
-        ip = requset.META.get('REMOTE_ADD', '')
-        user.add_login_record(username=user.username, ip=ip,
-                              version=version,
-                              source=source)
-        return user, profile
+        version = request.headers.get('version', '')
+        source = request.headers.get('source', '')
+        try:
+            # 1. 创建基础信息表
+            user = User.objects.create_user(
+                username=data.get('username', None),
+                password=data.get('password', None),
+                nickname=data.get('nickname', None),
+            )
+            # 2. 创建详细信息表
+            profile = Profile.objects.create(
+                user=user,
+                username=user.username,
+                version=version,
+                source=source
+            )
+            # 3. 执行登录
+            login(request, user)
+            # 4. 记录登录日志
+            user.last_login = now()
+            user.save()
+            ip = request.META.get('REMOTE_ADDR', '')
+            user.add_login_record(username=user.username, ip=ip,
+                                  version=version,
+                                  source=source)
+            return user, profile
+        except Exception as e:
+            print(e)
+            return None
 
 
 

@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.core.cache import cache
 from django.views.generic import FormView
 
-from system.froms import SendSmsCodeForm
+from system.forms import SendSmsCodeForm
 from system.models import Slider
 from utils.response import ServerErrorJsonResponse, BadRequestJsonResponse
 
@@ -68,5 +68,5 @@ class SmsCodeView(FormView):
 
     def form_invalid(self, form):
         """  表单未通过验证 """
-        err_list = json.load(form.errors.as_json())
+        err_list = json.loads(form.errors.as_json())
         return BadRequestJsonResponse(err_list)

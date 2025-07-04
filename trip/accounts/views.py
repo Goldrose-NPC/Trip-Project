@@ -6,9 +6,10 @@ from django.shortcuts import render, redirect
 from django.views.generic import FormView
 from django.views.generic.base import View
 
-from accounts.forms import LoginForm
+from accounts.forms import LoginForm, RegisterForm
 from accounts.serializers import UserProfileSerializer, UserSerializer
-from utils.response import BadRequestJsonResponse, MethodNotAllowedJsonResponse, UnauthenticatedJsonResponse
+from utils.response import BadRequestJsonResponse, MethodNotAllowedJsonResponse, UnauthenticatedJsonResponse, \
+    ServerErrorJsonResponse
 
 
 def user_login(request):
@@ -73,7 +74,7 @@ class UserDetailView(View):
     def get(self, request):
         user = request.user
         # 用户：是游客吗？
-        if user.is_authenticated:
+        if not user.is_authenticated:
             # 返回401状态码
             return UnauthenticatedJsonResponse()
         else:
@@ -82,7 +83,7 @@ class UserDetailView(View):
             # 返回的内容：用户的信息（基本信息、详细信息）
             data = {
                 'user': UserSerializer(user).to_dict(),
-                "profile": UserProfileSerializer(profile).to_dict()
+                'profile': UserProfileSerializer(profile).to_dict()
             }
             return http.JsonResponse(data)
 
@@ -92,28 +93,31 @@ def user_api_register(request):
     #  2. 创建用户基础信息表、用户详细信息表
     #  3. 执行登录
     #  4. 保留登录的日志
+    pass
 
 
 class UserRegisterView(FormView):
     """ 用户注册的接口 """
-    form_class = RecursionForm
+    form_class = RegisterForm
     http_method_names = ['post']
 
     def form_valid(self, form):
         """ 表单通过验证 """
-        reslut = form.do_register(requset=self.request)
-        if reslut is not None:
-            user, profile=
+        result = form.do_register(request=self.request)
+        if result is not None:
+            user, profile =result
             data = {
                 'user': UserSerializer(user).to_dict(),
-                "profile": UserProfileSerializer(profile).to_dict()
+                'profile': UserProfileSerializer(profile).to_dict()
             }
             return http.JsonResponse(data, status=201)
         return ServerErrorJsonResponse()
 
+
+
     def form_invalid(self, form):
         """  表单未通过验证 """
-        err_list = json.load(form.errors.as_json())
+        err_list = json.loads(form.errors.as_json())
         return BadRequestJsonResponse(err_list)
 
 

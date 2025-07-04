@@ -16,6 +16,6 @@ urlpatterns = [
     # 用户详细信息接口
     path('user/api/info/', views.UserDetailView.as_view(), name="user_api_info"),
     # 用户注册
-    path('user/api/register', views.user_api_register(), name="user_api_register"),
+    path('user/api/register/', views.UserRegisterView.as_view(), name="user_api_register"),
 
 ]

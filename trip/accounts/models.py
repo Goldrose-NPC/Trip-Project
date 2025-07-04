@@ -14,7 +14,7 @@ class User(AbstractUser):
 
     @property
     def avatar_url(self):
-        return self.avatar_url if self.avatar else ''
+        return self.avatar.url if self.avatar else ''
 
     def add_login_record(self, **kwargs):
         """ 保存登录历史 """

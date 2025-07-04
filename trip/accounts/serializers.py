@@ -8,7 +8,7 @@ class UserSerializer(BaseSerializer):
         user = self.obj
         return {
             'nickname': user.nickname,
-            'avatar': user.avatar.url
+            'avatar': user.avatar_url
         }
 
 class UserProfileSerializer(BaseSerializer):
