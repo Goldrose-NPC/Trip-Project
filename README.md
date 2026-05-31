@@ -283,94 +283,51 @@ npm run serve
 
 ## 页面截图
 
-截图统一存放在 `docs/screenshots/` 目录。以下为建议补充的页面：
+项目运行截图统一存放在 `docs/screenshots/` 目录，以下为当前主要页面展示。
 
 ### 首页
 
-建议内容：
+首页包含轮播图、热门推荐、精选景点等内容。
 
-- 轮播图
-- 热门推荐
-- 精选景点
-
-```md
-![首页](docs/screenshots/home.png)
-```
+![首页](docs/screenshots/首页.png)
 
 ### 搜索页
 
-建议内容：
+搜索页支持景点关键字检索、列表展示和分页切换。
 
-- 搜索框
-- 景点列表
-- 分页组件
-
-```md
-![搜索页](docs/screenshots/search.png)
-```
+![搜索页](docs/screenshots/搜索页.png)
 
 ### 景点详情页
 
-建议内容：
+景点详情页展示景点头图、评分、地址、门票信息和评论摘要。
 
-- 景点头图
-- 评分信息
-- 门票列表
-- 评论摘要
-
-```md
-![景点详情](docs/screenshots/sight-detail.png)
-```
+![景点详情](docs/screenshots/景点详情.png)
 
 ### 评论列表页
 
-建议内容：
+评论列表页支持评论内容展示与分页加载。
 
-- 评论内容
-- 评分
-- 图片
-- 列表加载状态
-
-```md
-![评论列表](docs/screenshots/comments.png)
-```
+![评论列表](docs/screenshots/评论列表.png)
 
 ### 登录页
 
-```md
-![登录页](docs/screenshots/login.png)
-```
+![登录页](docs/screenshots/登录页.png)
 
 ### 注册页
 
-```md
-![注册页](docs/screenshots/register.png)
-```
+![注册页](docs/screenshots/注册页.png)
 
 ### 个人中心页
 
-```md
-![个人中心](docs/screenshots/mine.png)
-```
+个人中心页提供用户信息概览和退出登录入口。
+
+![个人中心](docs/screenshots/个人中心页.png)
 
 ### 个人信息页
 
-```md
-![个人信息](docs/screenshots/profile.png)
-```
+个人信息页展示昵称、手机号、真实姓名、性别和邮箱等资料。
 
-### 管理后台
-
-可选补充：
-
-- 景点管理
-- 门票管理
-- 评论管理
-- 轮播图管理
-
-```md
-![管理后台](docs/screenshots/admin.png)
-```
+![个人信息](docs/screenshots/个人信息页.png)
 
 ## 已知说明
 
