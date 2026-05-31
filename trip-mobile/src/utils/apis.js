@@ -1,8 +1,7 @@
 /**
  * 存放项目中所有的接口地址
  */
-// const apiHost = 'http://127.0.0.1:8000/'
-const apiHost = 'http://localhost:8080/api/'
+const apiHost = process.env.VUE_APP_API_BASE_URL || '/api/'
 /**
  * 用户账户相关的接口
  */

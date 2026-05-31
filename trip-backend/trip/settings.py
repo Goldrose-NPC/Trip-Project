@@ -16,16 +16,43 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+def load_env_file(path):
+    if not os.path.exists(path):
+        return
+    with open(path, 'r', encoding='utf-8') as env_file:
+        for raw_line in env_file:
+            line = raw_line.strip()
+            if not line or line.startswith('#') or '=' not in line:
+                continue
+            key, value = line.split('=', 1)
+            os.environ.setdefault(key.strip(), value.strip())
+
+
+load_env_file(os.path.join(BASE_DIR, '.env'))
+
+
+def env_bool(name, default=False):
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.lower() in ('1', 'true', 'yes', 'on')
+
+
+def env_list(name, default=''):
+    value = os.getenv(name, default)
+    return [item.strip() for item in value.split(',') if item.strip()]
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'q!f@7x$+z30j_6p(l01nr=6@l+4hq0l0!iq@1lr0l1c0opek6^'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_bool('DJANGO_DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost')
 
 
 # Application definition
@@ -82,12 +109,12 @@ WSGI_APPLICATION = 'trip.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'trip_django',
-        'USER': 'root',
-        'PASSWORD': '666666',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE': os.getenv('DJANGO_DB_ENGINE', 'django.db.backends.mysql'),
+        'NAME': os.getenv('DJANGO_DB_NAME', 'trip_django'),
+        'USER': os.getenv('DJANGO_DB_USER', 'root'),
+        'PASSWORD': os.getenv('DJANGO_DB_PASSWORD', ''),
+        'HOST': os.getenv('DJANGO_DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DJANGO_DB_PORT', '3306'),
     }
 }
 
@@ -129,12 +156,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = 'http://localhost:8080/'
+MEDIA_URL = os.getenv('DJANGO_MEDIA_URL', '/media/')
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": os.getenv('DJANGO_REDIS_URL', "redis://127.0.0.1:6379/1"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "SOCKET_CONNECT_TIMEOUT": 5,  # 连接超时（秒）

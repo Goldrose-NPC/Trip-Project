@@ -217,13 +217,26 @@ cd trip-backend
 pip install -r requirements.txt
 ```
 
-默认数据库配置位于 `trip-backend/trip/settings.py`：
+复制环境变量示例文件，并按本地环境修改：
 
-- Database: `trip_django`
-- Host: `127.0.0.1`
-- Port: `3306`
-- User: `root`
-- Password: `666666`
+```bash
+cd trip-backend
+copy .env.example .env
+```
+
+后端支持以下环境变量：
+
+- `DJANGO_SECRET_KEY`
+- `DJANGO_DEBUG`
+- `DJANGO_ALLOWED_HOSTS`
+- `DJANGO_DB_ENGINE`
+- `DJANGO_DB_NAME`
+- `DJANGO_DB_USER`
+- `DJANGO_DB_PASSWORD`
+- `DJANGO_DB_HOST`
+- `DJANGO_DB_PORT`
+- `DJANGO_REDIS_URL`
+- `DJANGO_MEDIA_URL`
 
 默认 Redis 配置：
 
@@ -238,6 +251,17 @@ python manage.py runserver 127.0.0.1:8000
 ```
 
 ### 2. 启动前端
+
+复制前端环境变量示例文件：
+
+```bash
+cd trip-mobile
+copy .env.development.example .env.development
+```
+
+如需自定义接口地址，可配置：
+
+- `VUE_APP_API_BASE_URL`
 
 ```bash
 cd trip-mobile
@@ -354,6 +378,7 @@ npm run serve
 - 若数据库中没有初始化数据，前端页面会正常渲染但列表内容为空
 - 前端部分页面和入口仍处于预留状态，尚未形成完整业务闭环
 - 当前配置以本地开发环境为主，部署到生产环境前需要调整数据库、缓存、静态资源和安全配置
+- 历史提交中如果曾包含真实密钥或真实数据库密码，应在实际环境中及时轮换
 
 ## 后续可优化方向
 
