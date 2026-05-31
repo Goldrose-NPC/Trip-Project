@@ -1,4 +1,4 @@
-from system.serializer import BaseImageSerializer
+from system.serializer import BaseImageSerializer, normalize_image_url
 from utils.serializers import BaseListPageSerializer, BaseSerializer
 
 
@@ -9,7 +9,7 @@ class SightListSerializer(BaseListPageSerializer):
         return {
             'id': obj.id,
             'name': obj.name,
-            'main_img': obj.main_img.url,
+            'main_img': normalize_image_url(obj.main_img),
             'score': obj.score,
             'province': obj.province,
             'min_price': obj.min_price,
@@ -25,7 +25,7 @@ class SightDetailSerializer(BaseSerializer):
             'id': obj.id,
             'name': obj.name,
             'desc': obj.desc,
-            'img': obj.banner_img.url,
+            'img': normalize_image_url(obj.banner_img),
             'content': obj.content,
             'score': obj.score,
             'min_price': obj.min_price,

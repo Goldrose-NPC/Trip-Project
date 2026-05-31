@@ -11,6 +11,10 @@ module.exports = {
           // 需要重写的URL
           '^/api': ''
         }
+      },
+      '/media': {
+        target: 'http://127.0.0.1:8000/',
+        changeOrigin: true
       }
     }
   }

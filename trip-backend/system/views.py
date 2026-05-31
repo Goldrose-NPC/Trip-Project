@@ -10,6 +10,7 @@ from django.views.generic import FormView
 
 from system.forms import SendSmsCodeForm
 from system.models import Slider
+from system.serializer import normalize_image_url
 from utils.response import ServerErrorJsonResponse, BadRequestJsonResponse
 
 
@@ -31,7 +32,7 @@ def slider_list(request):
     for item in queryset:
         data['objects'].append({
             'id': item.id,
-            'img_url': item.img.url,
+            'img_url': normalize_image_url(item.img),
             'target_url': item.target_url,
             'name': item.name
         })

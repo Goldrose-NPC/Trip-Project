@@ -157,6 +157,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = os.getenv('DJANGO_MEDIA_URL', '/media/')
+MEDIA_ROOT = os.getenv('DJANGO_MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 
 CACHES = {
     "default": {

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+from system.serializer import normalize_image_url
 from utils.models import CommonModel
 
 
@@ -14,7 +15,7 @@ class User(AbstractUser):
 
     @property
     def avatar_url(self):
-        return self.avatar.url if self.avatar else ''
+        return normalize_image_url(self.avatar)
 
     def add_login_record(self, **kwargs):
         """ 保存登录历史 """
